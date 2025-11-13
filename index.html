@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalProPricing - Multi-Country Pricing Solution</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>GlobalProPricing</h1>
+                    <p>Multi-Country Pricing Solution</p>
+                </div>
+                <div class="user-section">
+                    <span>Welcome!</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Free Trial Section -->
+        <div id="freeTrialSection" class="subscription-section">
+            <div class="container">
+                <div class="section-header">
+                    <div class="trial-badge">🎉 FREE 15-DAY TRIAL</div>
+                    <h2>Start Your Global Selling Journey</h2>
+                    <p>Try all features free for 15 days. No credit card required.</p>
+                </div>
+
+                <div class="pricing-plans">
+                    <div class="plan-group">
+                        <div class="plan-cards">
+                            <div class="plan-card popular" style="max-width: 500px; margin: 0 auto;">
+                                <div class="popular-badge">FREE TRIAL</div>
+                                <div class="plan-header">
+                                    <h4>15 Days Full Access</h4>
+                                    <div class="price">$0<span>/15 days</span></div>
+                                    <div class="save-amount">Then $10/month</div>
+                                </div>
+                                <ul class="features">
+                                    <li>✅ All Countries Access</li>
+                                    <li>✅ Set Product Prices per Country</li>
+                                    <li>✅ Set Shipping Prices per Country</li>
+                                    <li>✅ Multiple Platform Integration</li>
+                                    <li>✅ Real-time Price Updates</li>
+                                </ul>
+                                <button class="subscribe-btn" onclick="startFreeTrial()">
+                                    🚀 Start Free Trial
+                                </button>
+                                <p class="trial-note">No credit card required • Cancel anytime</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="show-paid-plans">
+                    <p>Want to start immediately? <a href="javascript:void(0)" onclick="showPaidPlans()">View paid plans</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Application -->
+        <div id="mainApp" class="main-app" style="display: none;">
+            <div class="container">
+                <div class="app-header">
+                    <h2>Welcome to GlobalProPricing! 🎉</h2>
+                    <p>Manage your products and global pricing</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="simple-tabs">
+                    <button class="tab-btn active" onclick="openTab('products')">📦 Products</button>
+                    <button class="tab-btn" onclick="openTab('pricing')">💰 Pricing</button>
+                    <button class="tab-btn" onclick="openTab('shipping')">🚚 Shipping</button>
+                    <button class="tab-btn" onclick="openTab('billing')">💳 Billing</button>
+                </div>
+
+                <!-- Products Tab -->
+                <div id="productsTab" class="tab-content active">
+                    <h3>Product Management</h3>
+                    <div class="add-product-form">
+                        <h4>Add New Product</h4>
+                        <div class="form-group">
+                            <input type="text" id="productName" placeholder="Product Name">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="number" id="basePrice" placeholder="Base Price ($)">
+                            </div>
+                            <div class="form-group">
+                                <input type="number" id="productWeight" placeholder="Weight (kg)">
+                            </div>
+                        </div>
+                        <button onclick="addProduct()" class="btn-primary">+ Add Product</button>
+                    </div>
+
+                    <div class="products-list">
+                        <h4>Your Products</h4>
+                        <div id="productsContainer">
+                            <p>No products added yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Tab -->
+                <div id="pricingTab" class="tab-content">
+                    <h3>Multi-Country Pricing</h3>
+                    <div id="countryPricingGrid" class="country-pricing-grid">
+                        <!-- Countries will load here -->
+                    </div>
+                    <button onclick="saveAllPrices()" class="btn-primary">💾 Save All Prices</button>
+                </div>
+
+                <!-- Shipping Tab -->
+                <div id="shippingTab" class="tab-content">
+                    <h3>Shipping Calculator</h3>
+                    <div class="calculator-form">
+                        <div class="form-group">
+                            <select id="calcProduct">
+                                <option value="">-- Choose Product --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select id="calcCountry"></select>
+                        </div>
+                        <div class="form-group">
+                            <select id="calcMethod">
+                                <option value="standard">Standard Shipping</option>
+                                <option value="express">Express Shipping</option>
+                            </select>
+                        </div>
+                        <button onclick="calculateShipping()" class="btn-primary">Calculate Shipping</button>
+                        <div id="calcResult" class="result-box"></div>
+                    </div>
+                </div>
+
+                <!-- Billing Tab -->
+                <div id="billingTab" class="tab-content">
+                    <h3>Billing & Subscription</h3>
+                    <div class="billing-info">
+                        <div class="current-plan">
+                            <h4>Current Plan</h4>
+                            <div class="plan-details">
+                                <p><strong>Plan:</strong> <span id="currentPlan">Free Trial</span></p>
+                                <p><strong>Status:</strong> <span class="status-badge">Active</span></p>
+                                <p><strong>Trial Ends:</strong> <span id="trialEndDate">-</span></p>
+                            </div>
+                        </div>
+                        <div class="upgrade-section">
+                            <button onclick="showPaymentModal()" class="btn-primary">
+                                Subscribe Now - $10/month
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div id="paymentModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Complete Your Subscription</h2>
+                <div class="plan-summary">
+                    <h3>Monthly Plan</h3>
+                    <div class="price">$<span id="selectedPlanPrice">10</span></div>
+                    <div class="plan-duration">per month</div>
+                </div>
+                <div class="payment-instructions">
+                    <h4>💰 Payment Methods</h4>
+                    <div class="payment-methods-grid">
+                        <div class="payment-method">
+                            <h5>🏦 Bank Transfer</h5>
+                            <div class="bank-details">
+                                <p><strong>Bank:</strong> Your Bank</p>
+                                <p><strong>Account:</strong> Your Account</p>
+                            </div>
+                        </div>
+                        <div class="payment-method">
+                            <h5>📱 JazzCash</h5>
+                            <div class="bank-details">
+                                <p><strong>Number:</strong> 0300-1234567</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="important-notes">
+                        <p>After payment, send screenshot to:</p>
+                        <p>📧 Email: your@email.com</p>
+                        <p>📞 WhatsApp: +92 3001234567</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <footer style="background: linear-gradient(135deg, #2c3e50, #34495e); color: white; padding: 40px 20px; margin-top: 50px; border-radius: 15px 15px 0 0;">
+            <div class="container">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px;">
+                    <!-- Company Info -->
+                    <div>
+                        <h3 style="color: #3498db; margin-bottom: 15px;">🌍 GlobalProPricing</h3>
+                        <p>Multi-Country Pricing Solution for E-commerce Businesses. Start your global selling journey today!</p>
+                    </div>
+                    
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 style="color: #3498db; margin-bottom: 15px;">Quick Links</h4>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <a href="../2-Shopify-App/Shopify-app.html" style="color: white; text-decoration: none; transition: color 0.3s;">
+                                🛍️ Shopify Version
+                            </a>
+                            <a href="../5-Support/customer-support.html" style="color: white; text-decoration: none; transition: color 0.3s;">
+                                📞 Customer Support
+                            </a>
+                            <a href="../5-Support/privacy-policy.html" style="color: white; text-decoration: none; transition: color 0.3s;">
+                                🔒 Privacy Policy
+                            </a>
+                            <a href="../3-Admin-Panel/admin-panel.html" style="color: white; text-decoration: none; transition: color 0.3s;">
+                                ⚙️ Admin Panel
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Info -->
+                    <div>
+                        <h4 style="color: #3498db; margin-bottom: 15px;">Contact Us</h4>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <p>📧 support@globalpropricing.com</p>
+                            <p>📱 +92 300 1234567</p>
+                            <p>🕐 9AM - 6PM (PST)</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Copyright -->
+                <div style="text-align: center; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <p>&copy; 2024 GlobalProPricing. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
